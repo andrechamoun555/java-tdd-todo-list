@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 class TodoListTest {
+
     @Test
     public void addTaskWhenNewValidName() {
         TodoList todo = new TodoList();
@@ -41,9 +42,14 @@ class TodoListTest {
     @Test
     public void changeStatusOfTask() {
         TodoList todo = new TodoList();
-        todo.addTask("Play football today");
+        todo.addTask("buy cheese");
+        Assertions.assertTrue(todo.changeStatus("buy cheese"));
+        Assertions.assertTrue(todo.getCompletedTasks().contains("buy cheese"));
 
-        Assertions.assertTrue(todo.changeStatus("Play football today"));
+        Assertions.assertTrue(todo.changeStatus("buy cheese"));
+        Assertions.assertTrue(todo.getIncompleteTasks().contains("buy cheese"));
+
+        Assertions.assertFalse(todo.changeStatus("Play football today"));
         Assertions.assertFalse(todo.changeStatus("Non existent task"));
 
     }
@@ -52,10 +58,15 @@ class TodoListTest {
     public void getTaskByCompletion() {
         TodoList todo = new TodoList();
         todo.addTask("run");
-        Assertions.assertTrue(todo.changeStatus("run"));
+        todo.addTask("buy milk");
+        todo.addTask("buy cheese");
+
+        todo.changeStatus("run");
+        todo.changeStatus("buy milk");
 
         ArrayList<String> list = new ArrayList<>();
         list.add("run");
+        list.add("buy milk");
 
         Assertions.assertEquals(list, todo.getCompletedTasks());
     }
